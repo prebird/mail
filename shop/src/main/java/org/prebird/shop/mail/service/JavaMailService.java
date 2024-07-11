@@ -17,6 +17,10 @@ import org.springframework.stereotype.Service;
 public class JavaMailService implements MailService{
   private final JavaMailSender javaMailSender;
 
+  /**
+   * Java Mail Sender 로 실제로 메일을 보냅니다.
+   * @param emailMessage
+   */
   @Override
   public void send(EmailMessage emailMessage) {
     long startTime = System.currentTimeMillis();
