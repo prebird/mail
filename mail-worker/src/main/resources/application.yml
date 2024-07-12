@@ -1,0 +1,9 @@
+spring:
+  profiles:
+    group:
+      console:
+        - app
+      real:
+        - app
+        - mail
+    active: console

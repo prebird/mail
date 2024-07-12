@@ -1,2 +1,3 @@
 rootProject.name = 'mail'
 include 'shop'
+include 'mail-worker'
