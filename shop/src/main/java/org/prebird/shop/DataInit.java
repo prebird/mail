@@ -1,8 +1,8 @@
 package org.prebird.shop;
 
 import lombok.RequiredArgsConstructor;
-import org.prebird.shop.Product.Product;
-import org.prebird.shop.Product.ProductRepository;
+import org.prebird.shop.product.Product;
+import org.prebird.shop.product.ProductRepository;
 import org.prebird.shop.member.Member;
 import org.prebird.shop.member.MemberRepository;
 import org.springframework.boot.CommandLineRunner;

@@ -2,8 +2,8 @@ package org.prebird.shop.order;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.prebird.shop.Product.Product;
-import org.prebird.shop.Product.ProductRepository;
+import org.prebird.shop.product.Product;
+import org.prebird.shop.product.ProductRepository;
 import org.prebird.shop.mail.domain.EmailMessage;
 import org.prebird.shop.mail.service.MailService;
 import org.prebird.shop.member.Member;

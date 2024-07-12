@@ -1,4 +1,4 @@
-package org.prebird.shop.Product;
+package org.prebird.shop.product;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

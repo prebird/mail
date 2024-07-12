@@ -1,4 +1,4 @@
-package org.prebird.shop.Product;
+package org.prebird.shop.product;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
