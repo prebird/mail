@@ -7,3 +7,6 @@ spring:
         - app
         - mail
     active: console
+server:
+  port:
+    8081

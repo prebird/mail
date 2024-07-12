@@ -9,3 +9,5 @@ spring:
       db:
         - app
     active: db
+server:
+  port: 8080
