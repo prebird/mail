@@ -1,7 +1,7 @@
 package org.prebird.shop.mail.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.prebird.shop.mail.EmailMessage;
+import org.prebird.shop.mail.domain.EmailMessage;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 

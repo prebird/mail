@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3336/cache
+    url: jdbc:mysql://localhost:3336/shop
     username: root
     password: 12
   jpa:

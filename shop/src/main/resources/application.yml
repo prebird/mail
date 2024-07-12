@@ -6,4 +6,6 @@ spring:
       real:
         - app
         - mail
-    active: console
+      db:
+        - app
+    active: db

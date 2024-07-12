@@ -4,7 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.prebird.shop.Product.Product;
 import org.prebird.shop.Product.ProductRepository;
-import org.prebird.shop.mail.EmailMessage;
+import org.prebird.shop.mail.domain.EmailMessage;
 import org.prebird.shop.mail.service.MailService;
 import org.prebird.shop.member.Member;
 import org.prebird.shop.member.MemberRepository;
@@ -25,9 +25,9 @@ public class OrdersService {
 
     // 메일 발송
     mailService.send(EmailMessage.builder()
-            .to(member.getEmail())
+            .toEmail(member.getEmail())
             .subject("주문 완료 메일")
-            .message("<h2> 주문이 완료 되었습니다. </h2>")
+            .message("<h1> 주문이 완료 되었습니다. </h1>")
         .build());
 
     ordersRepository.save(Orders.builder()
