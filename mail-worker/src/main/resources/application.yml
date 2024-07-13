@@ -6,7 +6,7 @@ spring:
       real:
         - app
         - mail
-    active: console
+    active: real
 server:
   port:
     8081
