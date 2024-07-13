@@ -17,7 +17,7 @@ public class MailWorker {
   private final EmailMessageRepository emailMessageRepository;
   private final MailService mailService;
 
-  @Scheduled(fixedDelay = 10000)  // 10초에 한번
+  @Scheduled(fixedDelay = 1000)  // 이전 작업이 끝난 후, 1초 이후 수행됨 -> 중복 수행 방지됨
   public void sendUnProcessedMail() {
     List<EmailMessage> unprocessedMails = emailMessageRepository.findByEmailStatus(EmailStatus.UNPROCESSED);
     log.info("조회한 미처리 메일 갯수: {}", unprocessedMails.size());
