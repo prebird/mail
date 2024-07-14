@@ -21,6 +21,7 @@ public class AsyncMailProcessor {
     return CompletableFuture.runAsync(() -> {
       try {
         // 메일 발송
+        log.info(">> id: {} 메일 발송 호출", emailMessage.getId());
         mailService.send(emailMessage);
         // 발송 완료 처리
         emailMessage.completeSend();
