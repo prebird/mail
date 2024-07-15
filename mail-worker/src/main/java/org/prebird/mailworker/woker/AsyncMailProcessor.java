@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.prebird.mailworker.domain.EmailMessage;
 import org.prebird.mailworker.domain.EmailMessageRepository;
+import org.prebird.mailworker.domain.ErrorLog;
+import org.prebird.mailworker.domain.ErrorLogRepository;
 import org.prebird.mailworker.service.MailService;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 public class AsyncMailProcessor {
   private final MailService mailService;
   private final EmailMessageRepository emailMessageRepository;
+  private final ErrorLogRepository errorLogRepository;
 
   @Async
   public CompletableFuture<Void> sendUnprocessedMail(EmailMessage emailMessage) {
@@ -31,6 +34,7 @@ public class AsyncMailProcessor {
 
         log.info("id: {} 메일 발송 처리, 수행시간: {}", emailMessage.getId(), endTime - startTime);
       } catch (Exception e) {
+        errorLogRepository.save(new ErrorLog(ErrorLog.getStackTraceAsString(e)));
         log.error("메일 발송 실패: id: {}", emailMessage.getId(), e);
       }
     });
