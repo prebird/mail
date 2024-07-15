@@ -18,6 +18,7 @@ public class AsyncMailProcessor {
 
   @Async
   public CompletableFuture<Void> sendUnprocessedMail(EmailMessage emailMessage) {
+    long startTime = System.currentTimeMillis();
     return CompletableFuture.runAsync(() -> {
       try {
         // 메일 발송
@@ -26,7 +27,9 @@ public class AsyncMailProcessor {
         // 발송 완료 처리
         emailMessage.completeSend();
         emailMessageRepository.save(emailMessage);
-        log.info("id: {} 메일 발송 처리", emailMessage.getId());
+        long endTime = System.currentTimeMillis();
+
+        log.info("id: {} 메일 발송 처리, 수행시간: {}", emailMessage.getId(), endTime - startTime);
       } catch (Exception e) {
         log.error("메일 발송 실패: id: {}", emailMessage.getId(), e);
       }
