@@ -13,10 +13,11 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 public class AppConfig {
 
   @Bean
-  public Executor taskExecutor() {
+  public Executor threadPoolTaskExecutor() {
     ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-    taskExecutor.setCorePoolSize(128);
-    taskExecutor.setMaxPoolSize(128);
+    taskExecutor.setCorePoolSize(32);
+    taskExecutor.setMaxPoolSize(32);
+    taskExecutor.setPrestartAllCoreThreads(true); // 스레드풀 코어 수 만큼 미리 생성
     taskExecutor.initialize();
     return taskExecutor;
   }
