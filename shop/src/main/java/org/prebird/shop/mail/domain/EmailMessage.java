@@ -33,6 +33,10 @@ public class EmailMessage {
   @Builder.Default
   @Enumerated(EnumType.STRING)
   private EmailStatus emailStatus = EmailStatus.UNPROCESSED;
+
+  @Enumerated(EnumType.STRING)
+  private EmailType emailType;  // 이메일 타입 (긴급, 일반)
+
   private LocalDateTime sentAt; // 메일 발송 시간
   @Builder.Default
   private LocalDateTime requestAt = LocalDateTime.now(); // 메일 발송 요청 시간
