@@ -34,6 +34,8 @@ public class EmailMessage {
   @Enumerated(EnumType.STRING)
   private EmailStatus emailStatus = EmailStatus.UNPROCESSED;
   private LocalDateTime sentAt; // 메일 발송 시간
+  @Builder.Default
+  private LocalDateTime requestAt = LocalDateTime.now(); // 메일 발송 요청 시간
 
 
   @Override

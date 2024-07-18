@@ -3,10 +3,15 @@ spring:
     group:
       console:
         - app
+        - actuator
       real:
         - app
         - mail
-    active: console
+        - actuator
+      local-test:
+        - app-local
+        - actuator
+    active: local-test
 server:
   port:
-    8081
+    8080

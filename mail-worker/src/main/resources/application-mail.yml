@@ -8,6 +8,6 @@ spring:
       mail:
         smtp:
           auth: true
-          timeout: 5000
+          timeout: 8000   # 5초 -> 8초 늘림
           starttls:
             enable: true
