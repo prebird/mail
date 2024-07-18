@@ -6,12 +6,13 @@ spring:
         - actuator
       real:
         - app
-        - mail
+        - normal-mail
+        - urgent-mail
         - actuator
       local-test:
         - app-local
         - actuator
-    active: local-test
+    active: real
 server:
   port:
     8080

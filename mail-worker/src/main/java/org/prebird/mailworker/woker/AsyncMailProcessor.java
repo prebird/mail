@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @RequiredArgsConstructor
-@Service
 public class AsyncMailProcessor {
   private final MailService mailService;
   private final EmailMessageRepository emailMessageRepository;

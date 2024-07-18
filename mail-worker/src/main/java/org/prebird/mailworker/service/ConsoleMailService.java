@@ -2,12 +2,8 @@ package org.prebird.mailworker.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.prebird.mailworker.domain.EmailMessage;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Service;
 
 @Slf4j
-@Profile("console")
-@Service
 public class ConsoleMailService implements MailService {
 
   /**

@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EmailMessageRepository extends JpaRepository<EmailMessage, Long> {
   List<EmailMessage> findByEmailStatus(EmailStatus emailStatus);
+
+  List<EmailMessage> findByEmailStatusAndEmailType(EmailStatus emailStatus, EmailType emailType);
 }
