@@ -2,6 +2,7 @@ package org.prebird.shop.order;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.prebird.shop.mail.domain.EmailType;
 import org.prebird.shop.product.Product;
 import org.prebird.shop.product.ProductRepository;
 import org.prebird.shop.mail.domain.EmailMessage;
@@ -19,7 +20,7 @@ public class OrdersService {
   private final MailService mailService;
 
   @Transactional
-  public void order(String username, Long productId) {
+  public void order(String username, Long productId, EmailType emailType) {
     Member member = memberRepository.findByUsername(username).orElseThrow();
     Product product = productRepository.findById(productId).orElseThrow();
 
@@ -28,6 +29,7 @@ public class OrdersService {
             .toEmail(member.getEmail())
             .subject("주문 완료 메일")
             .message("<h1> 주문이 완료 되었습니다. </h1>")
+            .emailType(emailType)
         .build());
 
     // 주문 데이터 저장
