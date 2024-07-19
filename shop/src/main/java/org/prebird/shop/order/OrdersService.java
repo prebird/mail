@@ -29,8 +29,7 @@ public class OrdersService {
             .toEmail(member.getEmail())
             .subject("주문 완료 메일")
             .message("<h1> 주문이 완료 되었습니다. </h1>")
-            .emailType(EmailType.NORMAL)
-        .build());
+        .build(), EmailType.NORMAL);
 
     // 주문 데이터 저장
     ordersRepository.save(Orders.builder()

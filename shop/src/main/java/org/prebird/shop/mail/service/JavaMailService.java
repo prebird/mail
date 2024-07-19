@@ -5,6 +5,7 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.prebird.shop.mail.domain.EmailMessage;
+import org.prebird.shop.mail.domain.EmailType;
 import org.springframework.context.annotation.Profile;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -22,7 +23,7 @@ public class JavaMailService implements MailService{
    * @param emailMessage
    */
   @Override
-  public void send(EmailMessage emailMessage) {
+  public void send(EmailMessage emailMessage, EmailType emailType) {
     long startTime = System.currentTimeMillis();
 
     MimeMessage mimeMessage = javaMailSender.createMimeMessage();

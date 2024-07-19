@@ -34,8 +34,9 @@ public class EmailMessage {
   @Enumerated(EnumType.STRING)
   private EmailStatus emailStatus = EmailStatus.UNPROCESSED;
 
+  @Builder.Default
   @Enumerated(EnumType.STRING)
-  private EmailType emailType;  // 이메일 타입 (긴급, 일반)
+  private EmailType emailType = EmailType.NORMAL;  // 이메일 타입 (긴급, 일반)
 
   private LocalDateTime sentAt; // 메일 발송 시간
   @Builder.Default
@@ -57,5 +58,9 @@ public class EmailMessage {
   public void completeSend() {
     this.emailStatus = EmailStatus.PROCESSED;
     this.sentAt = LocalDateTime.now();
+  }
+
+  public void changeEmailType(EmailType emailType) {
+    this.emailType = emailType;
   }
 }
