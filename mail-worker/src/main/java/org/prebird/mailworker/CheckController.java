@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@DependsOn("threadPoolTaskExecutor")
+@DependsOn("mailWorkerTaskExecutor")
 public class CheckController {
-  private final ThreadPoolTaskExecutor threadPoolTaskExecutor;
+  private final ThreadPoolTaskExecutor mailWorkerTaskExecutor;
 
   @GetMapping("/thread-pool")
   public void logThreadPoolCount() {
     // 스레드 풀의 현재 스레드 갯수
-    log.info("threadPoolTaskExecutor : {}", threadPoolTaskExecutor.getPoolSize());
+    log.info("threadPoolTaskExecutor : {}", mailWorkerTaskExecutor.getPoolSize());
   }
 }

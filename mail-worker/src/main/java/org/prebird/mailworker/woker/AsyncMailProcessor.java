@@ -9,7 +9,6 @@ import org.prebird.mailworker.domain.ErrorLog;
 import org.prebird.mailworker.domain.ErrorLogRepository;
 import org.prebird.mailworker.service.MailService;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -18,7 +17,7 @@ public class AsyncMailProcessor {
   private final EmailMessageRepository emailMessageRepository;
   private final ErrorLogRepository errorLogRepository;
 
-  @Async
+  @Async("mailWorkerTaskExecutor")
   public CompletableFuture<Void> sendUnprocessedMail(EmailMessage emailMessage) {
     long startTime = System.currentTimeMillis();
     return CompletableFuture.runAsync(() -> {
