@@ -24,6 +24,7 @@ public class NormalMailWorker extends MailWorker {
    */
   @Override
   protected List<EmailMessage> findEmailToProcess() {
+    log.info("[NormalMailWorker]: 메일 조회 시작");
     List<EmailMessage> mailToProcess = emailMessageRepository.findByEmailStatusAndEmailType(
         EmailStatus.UNPROCESSED, EmailType.NORMAL);
     log.info("[NormalMailWorker]: 조회한 메일 건수 : {}", mailToProcess.size());
