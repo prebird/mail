@@ -16,7 +16,7 @@ public class MailWorker {
   private final EmailMessageRepository emailMessageRepository;
   private final AsyncMailProcessor asyncMailProcessor;
 
-  @Scheduled(fixedDelay = 3000)  // 이전 작업이 끝난 후, 3초 이후 수행됨 -> 중복 수행 방지됨
+  @Scheduled(fixedDelay = 1000)  // 이전 작업이 끝난 후, 1초 이후 수행됨 -> 중복 수행 방지됨
   public void sendUnProcessedMail() {
     List<EmailMessage> unprocessedMails = findEmailToProcess();
     log.info("조회한 미처리 메일 갯수: {}", unprocessedMails.size());

@@ -19,7 +19,7 @@ public class MailSenderConfig {
    * @param urgentMailProperties
    * @return
    */
-  @Profile("real")
+  @Profile({"real", "local-test"})
   @Bean
   public JavaMailSender urgentJavaMailSender(UrgentMailProperties urgentMailProperties) {
     return createMailSender(urgentMailProperties);
@@ -30,7 +30,7 @@ public class MailSenderConfig {
    * @param normalMailProperties
    * @return
    */
-  @Profile("real")
+  @Profile({"real", "local-test"})
   @Bean
   public JavaMailSender normalJavaMailSender(NormalMailProperties normalMailProperties) {
     return createMailSender(normalMailProperties);

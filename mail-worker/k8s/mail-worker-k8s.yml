@@ -23,7 +23,7 @@ spec:
 #              value: "-Xmx300m -Xms300m"
 #            - name: SPRING_APPLICATION_JSON
 #              value: '{"logging.level.root": "debug"}'
-          image: gyureal/mail-worker:local-test-128
+          image: gyureal/mail-worker:local-test-32-divide-3
           imagePullPolicy: Always
           resources:
             requests:
