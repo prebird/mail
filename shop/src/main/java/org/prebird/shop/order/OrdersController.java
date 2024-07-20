@@ -20,18 +20,18 @@ public class OrdersController {
    * @param productId
    */
   @PostMapping("/orders")
-  public void order(@RequestParam String username, @RequestParam Long productId, @RequestParam EmailType emailType) {
-    ordersService.order(username, productId, emailType);
+  public void order(@RequestParam String username, @RequestParam Long productId) {
+    ordersService.order(username, productId);
   }
 
   /**
    *  repeat 건수 반복하여 주문합니다.
    */
   @PostMapping("/orders/repeat")
-  public void orderRepeatedly(@RequestParam Integer repeat, @RequestParam String username, @RequestParam Long productId, @RequestParam EmailType emailType) {
+  public void orderRepeatedly(@RequestParam Integer repeat, @RequestParam String username, @RequestParam Long productId) {
     long startTime = System.currentTimeMillis();
     IntStream.range(0, repeat).forEach(
-        i -> ordersService.order(username, productId, emailType)
+        i -> ordersService.order(username, productId)
     );
     long endTime = System.currentTimeMillis();
     log.info(">>> 총 소요 시간: {}", endTime - startTime);
