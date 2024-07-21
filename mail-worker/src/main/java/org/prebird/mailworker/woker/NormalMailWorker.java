@@ -6,12 +6,14 @@ import org.prebird.mailworker.domain.EmailMessage;
 import org.prebird.mailworker.domain.EmailMessageRepository;
 import org.prebird.mailworker.domain.EmailStatus;
 import org.prebird.mailworker.domain.EmailType;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
 public class NormalMailWorker extends MailWorker {
   private final EmailMessageRepository emailMessageRepository;
+  private static final int BATCH_COUNT = 20;
 
   public NormalMailWorker(EmailMessageRepository emailMessageRepository, AsyncMailProcessor asyncNormalMailProcessor) {
     super(emailMessageRepository, asyncNormalMailProcessor);
@@ -26,7 +28,7 @@ public class NormalMailWorker extends MailWorker {
   protected List<EmailMessage> findEmailToProcess() {
     log.info("[NormalMailWorker]: 메일 조회 시작");
     List<EmailMessage> mailToProcess = emailMessageRepository.findByEmailStatusAndEmailType(
-        EmailStatus.UNPROCESSED, EmailType.NORMAL);
+        EmailStatus.UNPROCESSED, EmailType.NORMAL, PageRequest.of(0, BATCH_COUNT));
     log.info("[NormalMailWorker]: 조회한 메일 건수 : {}", mailToProcess.size());
     return mailToProcess;
   }

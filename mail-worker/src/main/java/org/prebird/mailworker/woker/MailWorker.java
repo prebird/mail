@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.prebird.mailworker.domain.EmailMessage;
 import org.prebird.mailworker.domain.EmailMessageRepository;
 import org.prebird.mailworker.domain.EmailStatus;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Scheduled;
 
 @Slf4j
@@ -15,6 +16,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 public class MailWorker {
   private final EmailMessageRepository emailMessageRepository;
   private final AsyncMailProcessor asyncMailProcessor;
+  private static final int BATCH_COUNT = 20;  // 한번에 처리할 메일 갯수
 
   @Scheduled(fixedDelay = 1000)  // 이전 작업이 끝난 후, 1초 이후 수행됨 -> 중복 수행 방지됨
   public void sendUnProcessedMail() {
@@ -35,6 +37,6 @@ public class MailWorker {
    * @return
    */
   protected List<EmailMessage> findEmailToProcess() {
-    return emailMessageRepository.findByEmailStatus(EmailStatus.UNPROCESSED);
+    return emailMessageRepository.findByEmailStatus(EmailStatus.UNPROCESSED, PageRequest.of(0, BATCH_COUNT));
   }
 }
