@@ -18,8 +18,8 @@ public class AppConfig {
   @Bean
   public ThreadPoolTaskExecutor mailWorkerTaskExecutor() {
     ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-    taskExecutor.setCorePoolSize(32);
-    taskExecutor.setMaxPoolSize(32);
+    taskExecutor.setCorePoolSize(64);
+    taskExecutor.setMaxPoolSize(64);
     taskExecutor.setPrestartAllCoreThreads(true); // 스레드풀 코어 수 만큼 미리 생성
     taskExecutor.setThreadNamePrefix("thread-pool-worker-");
     taskExecutor.initialize();
