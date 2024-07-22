@@ -29,7 +29,7 @@ public class MailWorkerConfig {
   @Bean
   public AsyncMailProcessor asyncUrgentMailProcessor(Environment env, EmailMessageRepository emailMessageRepository,
       ErrorLogRepository errorLogRepository, @Nullable JavaMailSender urgentJavaMailSender) {
-    if (env.matchesProfiles("console")) {
+    if (env.matchesProfiles("console", "local-test-console")) {
       return new AsyncMailProcessor(new ConsoleMailService(), emailMessageRepository, errorLogRepository);
     }
     return new AsyncMailProcessor(new JavaMailService(urgentJavaMailSender), emailMessageRepository, errorLogRepository);
@@ -47,7 +47,7 @@ public class MailWorkerConfig {
   @Bean
   public AsyncMailProcessor asyncNormalMailProcessor(Environment env, EmailMessageRepository emailMessageRepository,
       ErrorLogRepository errorLogRepository, @Nullable JavaMailSender normalJavaMailSender) {
-    if (env.matchesProfiles("console")) {
+    if (env.matchesProfiles("console", "local-test-console")) {
       return new AsyncMailProcessor(new ConsoleMailService(), emailMessageRepository, errorLogRepository);
     }
     return new AsyncMailProcessor(new JavaMailService(normalJavaMailSender), emailMessageRepository, errorLogRepository);

@@ -12,6 +12,9 @@ spring:
       local-test:
         - app-local
         - actuator
+      local-test-console:
+        - app-local
+        - actuator
     active: real
 server:
   port:
