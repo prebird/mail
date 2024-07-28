@@ -1,4 +1,4 @@
-package org.prebird.mailworker.woker;
+package org.prebird.mailworker.mailWorker.DatabaseMailWorker;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -13,9 +13,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 @Slf4j
 @RequiredArgsConstructor
-public class MailWorker {
+public class DBMailWorker {
   private final EmailMessageRepository emailMessageRepository;
-  private final AsyncMailProcessor asyncMailProcessor;
+  private final DBAsyncMailProcessor asyncMailProcessor;
   private static final int BATCH_COUNT = 20;  // 한번에 처리할 메일 갯수
 
   @Scheduled(fixedDelay = 1000)  // 이전 작업이 끝난 후, 1초 이후 수행됨 -> 중복 수행 방지됨
