@@ -6,9 +6,11 @@ import org.prebird.mailworker.domain.EmailMessage;
 import org.prebird.mailworker.domain.EmailMessageRepository;
 import org.prebird.mailworker.domain.EmailStatus;
 import org.prebird.mailworker.domain.EmailType;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
+@Profile({"db-real, db-console"})
 @Slf4j
 @Component
 public class NormalDBMailWorker extends DBMailWorker {

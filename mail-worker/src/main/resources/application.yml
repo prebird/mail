@@ -1,10 +1,10 @@
 spring:
   profiles:
     group:
-      console:
+      db-console:
         - app
         - actuator
-      real:
+      db-real:
         - app
         - normal-mail
         - urgent-mail

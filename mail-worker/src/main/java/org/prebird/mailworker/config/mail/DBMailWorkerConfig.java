@@ -10,6 +10,7 @@ import org.prebird.mailworker.mailWorker.DatabaseMailWorker.NormalDBMailWorker;
 import org.prebird.mailworker.mailWorker.DatabaseMailWorker.UrgentDBMailWorker;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 
@@ -17,7 +18,7 @@ import org.springframework.mail.javamail.JavaMailSender;
  * MailWorker 의 설정을 위한 Config
  */
 @Configuration
-public class MailWorkerConfig {
+public class DBMailWorkerConfig {
 
   /**
    * 긴급(Urgent) 계정으로 메일을 발송하는 AsyncMailProcessor 를 생성합니다.
@@ -28,10 +29,11 @@ public class MailWorkerConfig {
    * @param urgentJavaMailSender 긴급 메일 발송기
    * @return
    */
+  @Profile({"db-real, db-console"})
   @Bean
   public DBAsyncMailProcessor asyncUrgentMailProcessor(Environment env, EmailMessageRepository emailMessageRepository,
       ErrorLogRepository errorLogRepository, @Nullable JavaMailSender urgentJavaMailSender) {
-    if (env.matchesProfiles("console", "local-test-console")) {
+    if (env.matchesProfiles("db-console", "local-test-console")) {
       return new DBAsyncMailProcessor(new ConsoleMailService(), emailMessageRepository, errorLogRepository);
     }
     return new DBAsyncMailProcessor(new JavaMailService(urgentJavaMailSender), emailMessageRepository, errorLogRepository);
@@ -46,10 +48,11 @@ public class MailWorkerConfig {
    * @param normalJavaMailSender 일반 메일 발송기
    * @return
    */
+  @Profile({"db-real, db-console"})
   @Bean
   public DBAsyncMailProcessor asyncNormalMailProcessor(Environment env, EmailMessageRepository emailMessageRepository,
       ErrorLogRepository errorLogRepository, @Nullable JavaMailSender normalJavaMailSender) {
-    if (env.matchesProfiles("console", "local-test-console")) {
+    if (env.matchesProfiles("db-console", "local-test-console")) {
       return new DBAsyncMailProcessor(new ConsoleMailService(), emailMessageRepository, errorLogRepository);
     }
     return new DBAsyncMailProcessor(new JavaMailService(normalJavaMailSender), emailMessageRepository, errorLogRepository);

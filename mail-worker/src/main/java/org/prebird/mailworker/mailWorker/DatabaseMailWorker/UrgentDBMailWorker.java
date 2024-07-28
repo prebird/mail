@@ -6,12 +6,14 @@ import org.prebird.mailworker.domain.EmailMessage;
 import org.prebird.mailworker.domain.EmailMessageRepository;
 import org.prebird.mailworker.domain.EmailStatus;
 import org.prebird.mailworker.domain.EmailType;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 /**
  * 긴급(urgent) 타입의 메일을 주기적으로 조회하여 메일을 발송합니다.
  */
+@Profile({"db-real, db-console"})
 @Slf4j
 @Component
 public class UrgentDBMailWorker extends DBMailWorker {
