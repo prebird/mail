@@ -9,13 +9,17 @@ spring:
         - normal-mail
         - urgent-mail
         - actuator
+      message-queue-console:
+        - app
+        - rabbitmq
+        - actuator
       local-test:
         - app-local
         - actuator
       local-test-console:
         - app-local
         - actuator
-    active: real
+    active: console
 server:
   port:
     8080
