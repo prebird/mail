@@ -28,7 +28,7 @@ public class UrgentDBMailWorker extends DBMailWorker {
    * @return
    */
   @Override
-  protected List<EmailMessage> findEmailToProcess() {
+  public List<EmailMessage> fetchEmailToProcess() {
     log.info("[UrgentMailWorker]: 메일 조회 시작");
     List<EmailMessage> mailToProcess = emailMessageRepository.findByEmailStatusAndEmailType(
         EmailStatus.UNPROCESSED, EmailType.URGENT, PageRequest.of(0, BATCH_COUNT));

@@ -25,7 +25,7 @@ public class NormalDBMailWorker extends DBMailWorker {
    * @return
    */
   @Override
-  protected List<EmailMessage> findEmailToProcess() {
+  public List<EmailMessage> fetchEmailToProcess() {
     log.info("[NormalMailWorker]: 메일 조회 시작");
     List<EmailMessage> mailToProcess = emailMessageRepository.findByEmailStatusAndEmailType(
         EmailStatus.UNPROCESSED, EmailType.NORMAL, PageRequest.of(0, BATCH_COUNT));
