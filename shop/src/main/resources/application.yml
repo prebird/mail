@@ -8,6 +8,9 @@ spring:
         - mail
       db:
         - app
-    active: db
+      message-queue:
+        - app
+        - rabbitmq
+    active: message-queue
 server:
   port: 8081
