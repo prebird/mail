@@ -19,7 +19,7 @@ spring:
       local-test-console:
         - app-local
         - actuator
-    active: console
+    active: message-queue-console
 server:
   port:
     8080

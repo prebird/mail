@@ -1,12 +1,14 @@
 package org.prebird.mailworker.config;
 
+import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-@Profile("message-queue")
+@Profile({"message-queue-console"})
 @Configuration
 public class RabbitMqConfig {
   // exchange
@@ -26,5 +28,18 @@ public class RabbitMqConfig {
   public MessageConverter messageConverter() {
     Jackson2JsonMessageConverter jackson2JsonMessageConverter = new Jackson2JsonMessageConverter();
     return jackson2JsonMessageConverter;
+  }
+
+  @Bean
+  public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(CachingConnectionFactory connectionFactory) {
+    SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+    factory.setConnectionFactory(connectionFactory);
+    factory.setBatchListener(true);
+    factory.setConsumerBatchEnabled(true);   // 소비자 배치
+    factory.setDeBatchingEnabled(true); // 디배칭 활성화
+    factory.setBatchSize(10); // 배치 크기 설정 -> 다를 경우 프리패치 갯수로 우선 적용됨
+    factory.setPrefetchCount(5); // 프리페치 크기 설정
+    factory.setMessageConverter(messageConverter());
+    return factory;
   }
 }
