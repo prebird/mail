@@ -1,6 +1,6 @@
 package org.prebird.mailworker.mailWorker.MessageQueueMailWorker;
 
-import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.prebird.mailworker.domain.EmailMessage;
@@ -18,9 +18,10 @@ public class MQMailWorker {
   public static final String NORMAL_MAIL_QUEUE = "normal.mail.queue";
 
   @RabbitListener(queues = {NORMAL_MAIL_QUEUE})
-  public void onMessage(List<EmailMessage> emailMessages) {
-    log.info("fetch batch message {}", emailMessages.size());
-    emailMessages.stream().forEach(emailMessage -> {
+  public CompletableFuture<Void> fetchMessageAndSendMail(EmailMessage emailMessage) {
+    return CompletableFuture.runAsync(() -> {
+      log.info("--------------------------------");
+      log.info("fetchMessageAndSendMail called");
       log.info("message: {}", emailMessage);
       mailService.send(emailMessage);
     });

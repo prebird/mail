@@ -1,5 +1,6 @@
 package org.prebird.mailworker.config;
 
+import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -34,12 +35,9 @@ public class RabbitMqConfig {
   public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(CachingConnectionFactory connectionFactory) {
     SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
     factory.setConnectionFactory(connectionFactory);
-    factory.setBatchListener(true);
-    factory.setConsumerBatchEnabled(true);   // 소비자 배치
-    factory.setDeBatchingEnabled(true); // 디배칭 활성화
-    factory.setBatchSize(10); // 배치 크기 설정 -> 다를 경우 프리패치 갯수로 우선 적용됨
     factory.setPrefetchCount(5); // 프리페치 크기 설정
     factory.setMessageConverter(messageConverter());
+    factory.setAcknowledgeMode(AcknowledgeMode.MANUAL);
     return factory;
   }
 }
