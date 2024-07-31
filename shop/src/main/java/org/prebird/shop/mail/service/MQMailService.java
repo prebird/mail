@@ -1,5 +1,7 @@
 package org.prebird.shop.mail.service;
 
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.prebird.shop.config.RabbitMqConfig;
@@ -18,10 +20,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class MQMailService implements MailService {
   private final RabbitTemplate rabbitTemplate;
+  private AtomicLong sequence = new AtomicLong(0);
 
   @Override
   public void send(EmailMessage emailMessage, EmailType emailType) {
     log.info("MQMailService called");
+    setSequence(emailMessage);
     if (emailType == EmailType.NORMAL) {
       rabbitTemplate.convertAndSend(RabbitMqConfig.MAIL_TOPIC_EXCHANGE_NAME, RabbitMqConfig.NORMAL_MAIL_ROUTING_KEY, emailMessage);
       return;
@@ -31,5 +35,10 @@ public class MQMailService implements MailService {
       return;
     }
     throw new IllegalStateException("올바르지 않은 EmailType 입니다.");
+  }
+
+  // 식별을 위한 sequence 추가
+  private void setSequence(EmailMessage emailMessage) {
+      emailMessage.setSequenceAsId(sequence.incrementAndGet());
   }
 }
