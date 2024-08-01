@@ -45,7 +45,8 @@ public class EmailMessage {
   @Override
   public String toString() {
     return "EmailMessage{" +
-        "to='" + toEmail + '\'' +
+        "id=" + id +
+        ", toEmail='" + toEmail + '\'' +
         ", subject='" + subject + '\'' +
         ", message='" + message + '\'' +
         '}';
