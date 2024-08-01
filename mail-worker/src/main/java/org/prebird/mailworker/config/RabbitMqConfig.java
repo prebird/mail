@@ -1,5 +1,6 @@
 package org.prebird.mailworker.config;
 
+import java.time.Duration;
 import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -8,6 +9,7 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.retry.interceptor.RetryInterceptorBuilder;
 
 @Profile({"message-queue-console"})
 @Configuration
@@ -37,7 +39,14 @@ public class RabbitMqConfig {
     factory.setConnectionFactory(connectionFactory);
     factory.setPrefetchCount(5); // 프리페치 크기 설정
     factory.setMessageConverter(messageConverter());
-    factory.setAcknowledgeMode(AcknowledgeMode.MANUAL);
+    factory.setAcknowledgeMode(AcknowledgeMode.AUTO);
+    factory.setDefaultRequeueRejected(false);
+
+    factory.setAdviceChain(RetryInterceptorBuilder.stateless()
+        .maxAttempts(3)
+        .backOffOptions(Duration.ofSeconds(3L).toMillis(), 2, Duration.ofSeconds(10L).toMillis())
+        .build());
+
     return factory;
   }
 }
