@@ -40,6 +40,8 @@ public class RabbitMqConfig {
     factory.setPrefetchCount(5); // 프리페치 크기 설정
     factory.setMessageConverter(messageConverter());
     factory.setAcknowledgeMode(AcknowledgeMode.AUTO);
+    factory.setConcurrentConsumers(5); // 동시성 설정
+    factory.setMaxConcurrentConsumers(5); // 최대 동시성 설정
     factory.setDefaultRequeueRejected(false);
 
     factory.setAdviceChain(RetryInterceptorBuilder.stateless()
