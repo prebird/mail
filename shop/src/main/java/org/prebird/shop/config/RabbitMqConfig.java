@@ -4,6 +4,7 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.QueueBuilder;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
@@ -22,6 +23,8 @@ public class RabbitMqConfig {
   // routing key
   public static final String URGENT_MAIL_ROUTING_KEY = "urgent.new.mail";
   public static final String NORMAL_MAIL_ROUTING_KEY = "normal.new.mail";
+  // dead letter queue
+
 
   @Bean
   public TopicExchange mailTopicExchange() {
@@ -30,12 +33,18 @@ public class RabbitMqConfig {
 
   @Bean
   public Queue urgentMailQueue() {
-    return new Queue(URGENT_MAIL_QUEUE, true);
+    return QueueBuilder.durable(URGENT_MAIL_QUEUE)
+        .withArgument("x-dead-letter-exchange", DeadLetterConfig.DEAD_LETTER_EXCHANGE)
+        .withArgument("x-dead-letter-routing-key", DeadLetterConfig.DEAD_LETTER_ROUTING_KEY_MESSAGE)
+        .build();
   }
 
   @Bean
   public Queue normalMailQueue() {
-    return new Queue(NORMAL_MAIL_QUEUE, true);
+    return QueueBuilder.durable(NORMAL_MAIL_QUEUE)
+        .withArgument("x-dead-letter-exchange", DeadLetterConfig.DEAD_LETTER_EXCHANGE)
+        .withArgument("x-dead-letter-routing-key", DeadLetterConfig.DEAD_LETTER_ROUTING_KEY_MESSAGE)
+        .build();
   }
 
   @Bean
