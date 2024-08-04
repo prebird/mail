@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ConsoleMailService implements MailService {
   // 초당 5개로 요청 제한
-  private RateLimiter rateLimiter = RateLimiter.create(3);
+  private RateLimiter rateLimiter = RateLimiter.create(10);
 
   /**
    * 메일 발송 로직을 콘솔 로그로 대체합니다.

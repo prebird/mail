@@ -3,6 +3,7 @@ package org.prebird.mailworker.mailWorker.MessageQueueMailWorker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.prebird.mailworker.domain.EmailMessage;
+import org.prebird.mailworker.domain.EmailMessageRepository;
 import org.prebird.mailworker.service.MailService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.context.annotation.Profile;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MQMailWorker {
   private final MailService mailService;
+  private final EmailMessageRepository emailMessageRepository;
   public static final String NORMAL_MAIL_QUEUE = "normal.mail.queue";
 
 
@@ -26,5 +28,8 @@ public class MQMailWorker {
     log.info("--------------------------------");
     log.info("fetchMessageAndSendMailSync called");
     mailService.send(emailMessage);
+
+    emailMessage.completeSend();
+    emailMessageRepository.updateCompleteMessageById(emailMessage.getId(), emailMessage.getEmailStatus(), emailMessage.getSentAt());
   }
 }
