@@ -97,8 +97,8 @@ public class LoadController {
     LocalDateTime lastSentAt = emailMessages.stream().map(EmailMessage::getSentAt).filter(sentAt -> sentAt != null).max(LocalDateTime::compareTo).get();
     double duration = (double) Duration.between(firstRequestAt, lastSentAt).toMillis() / 1000.0;
     double tps = processCount / duration;
-    double averageTime = emailMessages.stream().mapToDouble(em -> Duration.between(em.getRequestAt(), em.getSentAt()).toMillis() / 1000.0).average().getAsDouble();
-    double maxTime = emailMessages.stream().mapToDouble(em -> Duration.between(em.getRequestAt(), em.getSentAt()).toMillis() / 1000.0).max().getAsDouble();
+    double averageTime = emailMessages.stream().filter(em -> em.getSentAt() != null).mapToDouble(em -> Duration.between(em.getRequestAt(), em.getSentAt()).toMillis() / 1000.0).average().getAsDouble();
+    double maxTime = emailMessages.stream().filter(em -> em.getSentAt() != null).mapToDouble(em -> Duration.between(em.getRequestAt(), em.getSentAt()).toMillis() / 1000.0).max().getAsDouble();
 
     log.info("처리건수: {} / 미처리 건수: {}", processCount, failCount);
     log.info("걸린 시간: {} - {} = {}", firstRequestAt, lastSentAt, duration);
