@@ -45,8 +45,8 @@ public class RabbitMqConfig {
     factory.setDefaultRequeueRejected(false);
 
     factory.setAdviceChain(RetryInterceptorBuilder.stateless()
-        .maxAttempts(3)
-        .backOffOptions(Duration.ofSeconds(3L).toMillis(), 2, Duration.ofSeconds(10L).toMillis())
+        .maxAttempts(5)
+        .backOffOptions(Duration.ofSeconds(1L).toMillis(), 2, Duration.ofSeconds(10L).toMillis())
         .build());
 
     return factory;
