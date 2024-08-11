@@ -7,5 +7,8 @@ spring:
 
 logging:
   level:
-    org.springframework.amqp: TRACE
-    com.rabbitmq: TRACE
+#    org.springframework: TRACE
+#    java: TRACE
+    org.springframework.amqp: DEBUG
+    org.springframework.retry: DEBUG
+    com.rabbitmq: DEBUG
