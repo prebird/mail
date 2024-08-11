@@ -19,7 +19,7 @@ public class JavaMailService implements MailService{
   private final JavaMailSender javaMailSender;
 
   /**
-   * Java Mail Sender 로 실제로 메일을 보냅니다.
+   * Java Mail Sender를 사용하여 동기방식으로 실제로 메일을 발송합니다.
    * @param emailMessage
    */
   @Override

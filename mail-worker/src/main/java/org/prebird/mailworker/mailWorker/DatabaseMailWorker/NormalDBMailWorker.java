@@ -1,4 +1,4 @@
-package org.prebird.mailworker.woker;
+package org.prebird.mailworker.mailWorker.DatabaseMailWorker;
 
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -6,16 +6,18 @@ import org.prebird.mailworker.domain.EmailMessage;
 import org.prebird.mailworker.domain.EmailMessageRepository;
 import org.prebird.mailworker.domain.EmailStatus;
 import org.prebird.mailworker.domain.EmailType;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
+@Profile({"db-real, db-console"})
 @Slf4j
 @Component
-public class NormalMailWorker extends MailWorker {
+public class NormalDBMailWorker extends DBMailWorker {
   private final EmailMessageRepository emailMessageRepository;
   private static final int BATCH_COUNT = 20;
 
-  public NormalMailWorker(EmailMessageRepository emailMessageRepository, AsyncMailProcessor asyncNormalMailProcessor) {
+  public NormalDBMailWorker(EmailMessageRepository emailMessageRepository, DBAsyncMailProcessor asyncNormalMailProcessor) {
     super(emailMessageRepository, asyncNormalMailProcessor);
     this.emailMessageRepository = emailMessageRepository;
   }
@@ -25,7 +27,7 @@ public class NormalMailWorker extends MailWorker {
    * @return
    */
   @Override
-  protected List<EmailMessage> findEmailToProcess() {
+  public List<EmailMessage> fetchEmailToProcess() {
     log.info("[NormalMailWorker]: 메일 조회 시작");
     List<EmailMessage> mailToProcess = emailMessageRepository.findByEmailStatusAndEmailType(
         EmailStatus.UNPROCESSED, EmailType.NORMAL, PageRequest.of(0, BATCH_COUNT));

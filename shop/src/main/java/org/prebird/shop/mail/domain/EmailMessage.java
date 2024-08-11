@@ -42,7 +42,6 @@ public class EmailMessage {
   @Builder.Default
   private LocalDateTime requestAt = LocalDateTime.now(); // 메일 발송 요청 시간
 
-
   @Override
   public String toString() {
     return "EmailMessage{" +
@@ -62,5 +61,9 @@ public class EmailMessage {
 
   public void changeEmailType(EmailType emailType) {
     this.emailType = emailType;
+  }
+
+  public void setSequenceAsId(long sequence) {
+    this.id = sequence;
   }
 }

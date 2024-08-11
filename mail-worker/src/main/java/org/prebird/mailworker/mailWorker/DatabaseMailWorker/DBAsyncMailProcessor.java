@@ -1,4 +1,4 @@
-package org.prebird.mailworker.woker;
+package org.prebird.mailworker.mailWorker.DatabaseMailWorker;
 
 import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.Async;
 
 @Slf4j
 @RequiredArgsConstructor
-public class AsyncMailProcessor {
+public class DBAsyncMailProcessor {
   private final MailService mailService;
   private final EmailMessageRepository emailMessageRepository;
   private final ErrorLogRepository errorLogRepository;
