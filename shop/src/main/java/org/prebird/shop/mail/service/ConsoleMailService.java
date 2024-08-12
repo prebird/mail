@@ -25,4 +25,9 @@ public class ConsoleMailService implements MailService{
       log.error("에러 발생");
     }
   }
+
+  @Override
+  public void send(EmailMessage emailMessage) {
+    send(emailMessage, EmailType.NORMAL);
+  }
 }

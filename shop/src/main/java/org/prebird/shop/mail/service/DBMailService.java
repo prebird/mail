@@ -24,4 +24,9 @@ public class DBMailService implements MailService{
     emailMessageRepository.save(emailMessage);
     log.info(">>> emailMessage 메세지가 DB에 저장되었습니다.");
   }
+
+  @Override
+  public void send(EmailMessage emailMessage) {
+    send(emailMessage, EmailType.NORMAL);
+  }
 }

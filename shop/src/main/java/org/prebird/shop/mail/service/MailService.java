@@ -16,4 +16,6 @@ public interface MailService {
    *                  </ul>
    */
   void send(EmailMessage emailMessage, EmailType emailType);
+
+  void send(EmailMessage emailMessage);
 }

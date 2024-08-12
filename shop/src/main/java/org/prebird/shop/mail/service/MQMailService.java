@@ -38,4 +38,9 @@ public class MQMailService implements MailService {
     }
     throw new IllegalStateException("올바르지 않은 EmailType 입니다.");
   }
+
+  @Override
+  public void send(EmailMessage emailMessage) {
+    send(emailMessage, EmailType.NORMAL);
+  }
 }

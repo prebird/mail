@@ -44,4 +44,9 @@ public class JavaMailService implements MailService{
       throw new MailParsingException(e);
     }
   }
+
+  @Override
+  public void send(EmailMessage emailMessage) {
+    send(emailMessage, EmailType.NORMAL);
+  }
 }
