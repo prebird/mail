@@ -16,6 +16,7 @@ public class ConsoleMailService implements MailService{
    * google 메일 API 호출 평균시간인 4100 ms 만큼 sleep 합니다.
    * @param emailMessage
    */
+  @Async("mailServiceTaskExecutor")
   @Override
   public void send(EmailMessage emailMessage) {
     try {

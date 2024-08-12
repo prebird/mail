@@ -11,6 +11,6 @@ spring:
       message-queue:
         - app
         - rabbitmq
-    active: message-queue
+    active: console
 server:
   port: 8081
