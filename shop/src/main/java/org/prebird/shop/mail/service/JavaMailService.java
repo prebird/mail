@@ -26,7 +26,7 @@ public class JavaMailService implements MailService{
    */
   @Retryable(interceptor = "mailRetryInterceptor")
   @Override
-  public void send(EmailMessage emailMessage, EmailType emailType) {
+  public void send(EmailMessage emailMessage) {
     long startTime = System.currentTimeMillis();
 
     MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -43,10 +43,5 @@ public class JavaMailService implements MailService{
     } catch (MessagingException e) {
       throw new MailParsingException(e);
     }
-  }
-
-  @Override
-  public void send(EmailMessage emailMessage) {
-    send(emailMessage, EmailType.NORMAL);
   }
 }

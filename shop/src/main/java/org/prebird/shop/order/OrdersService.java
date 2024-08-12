@@ -35,6 +35,6 @@ public class OrdersService {
         .toEmail(member.getEmail())
         .subject("주문 완료 메일")
         .message("<h1> 주문이 완료 되었습니다. </h1>")
-        .build());
+        .build()); //, EmailType.NORMAL
   }
 }

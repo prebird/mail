@@ -17,7 +17,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.test.context.ActiveProfiles;
 
 @Slf4j
-@ActiveProfiles("real")
+@ActiveProfiles("console")
 @SpringBootTest(properties = {
     "GMAIL_PASSWORD="
 })
@@ -59,7 +59,7 @@ public class AsyncMailLoadTest {
 
   private void sendMailAsync(EmailMessage emailMessage) {
       CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
-      mailService.send(emailMessage, EmailType.NORMAL);
+      mailService.send(emailMessage);
     }, taskExecutor).whenComplete((result, ex) -> {
       if (ex != null) {
         log.error("## error!", ex);

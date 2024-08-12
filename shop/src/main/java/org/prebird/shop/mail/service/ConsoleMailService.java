@@ -2,8 +2,8 @@ package org.prebird.shop.mail.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.prebird.shop.mail.domain.EmailMessage;
-import org.prebird.shop.mail.domain.EmailType;
 import org.springframework.context.annotation.Profile;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -17,17 +17,12 @@ public class ConsoleMailService implements MailService{
    * @param emailMessage
    */
   @Override
-  public void send(EmailMessage emailMessage, EmailType emailType) {
+  public void send(EmailMessage emailMessage) {
     try {
       Thread.sleep(4100);
       log.info(">>> mail sent!");
     } catch (Exception e) {
       log.error("에러 발생");
     }
-  }
-
-  @Override
-  public void send(EmailMessage emailMessage) {
-    send(emailMessage, EmailType.NORMAL);
   }
 }
