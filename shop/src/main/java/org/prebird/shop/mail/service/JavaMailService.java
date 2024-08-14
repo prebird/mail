@@ -9,6 +9,7 @@ import org.prebird.shop.mail.domain.EmailType;
 import org.springframework.context.annotation.Profile;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 @Profile("real")
@@ -22,6 +23,7 @@ public class JavaMailService implements MailService{
    * Java Mail Sender를 사용하여 동기방식으로 실제로 메일을 발송합니다.
    * @param emailMessage
    */
+  @Retryable(interceptor = "mailRetryInterceptor")
   @Override
   public void send(EmailMessage emailMessage, EmailType emailType) {
     long startTime = System.currentTimeMillis();
