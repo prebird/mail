@@ -4,6 +4,7 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.prebird.shop.exception.MailParsingException;
 import org.prebird.shop.mail.domain.EmailMessage;
 import org.prebird.shop.mail.domain.EmailType;
 import org.springframework.context.annotation.Profile;
@@ -40,7 +41,7 @@ public class JavaMailService implements MailService{
       long endTime = System.currentTimeMillis();
       log.info("Execution mail send: {}", endTime - startTime);
     } catch (MessagingException e) {
-      throw new RuntimeException("메일 발송 중 에러가 발생했습니다.", e);
+      throw new MailParsingException(e);
     }
   }
 }
