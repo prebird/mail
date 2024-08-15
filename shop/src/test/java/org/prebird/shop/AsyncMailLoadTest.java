@@ -47,14 +47,13 @@ public class AsyncMailLoadTest {
     }
 
     // 모든 작업이 완료되기를 기다림
-    CompletableFuture<Void> allFutures = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+    CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
+        .exceptionally(ex -> null)  // 예외 무시
+        .join();
 
-    allFutures.handle((result, ex) -> {   // whenComplete 는 예외를 밖으로 던짐, handle 은 응답을 정해줘야함, exceptionally() 는 예외 발생시에만 동작함
-      log.info("All emails processed.");
-      log.info("Success count: " + successCount.get());
-      log.info("Error count: " + errorCount.get());
-      return null; // 정상응답
-    }).join(); // 메인 스레드에서 실행을 기다리게 하기 위해 사용
+    log.info("All emails processed.");
+    log.info("Success count: " + successCount.get());
+    log.info("Error count: " + errorCount.get());
   }
 
   private void sendMailAsync(EmailMessage emailMessage) {
