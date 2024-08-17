@@ -31,7 +31,7 @@ class MockMailControllerTest {
 
   @Test
   public void 초당_5건_이하의_요청은_제한되지_않습니다() {
-    int requestCount = 4;
+    int requestCount = 5;
     String account = "test@example.com";
 
     for (int i = 0; i < requestCount; i++) {
@@ -51,7 +51,7 @@ class MockMailControllerTest {
 
   @Test
   public void 초당_5건_이상의_요청은_제한됩니다() {
-    int requestCount = 5;
+    int requestCount = 6;
     String account = "test@example.com";
 
     for (int i = 0; i < requestCount; i++) {

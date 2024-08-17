@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 public class GuavaMailRateLimiter implements MailRateLimiter {
   // 초당 5개로 요청 제한
   private static final int LIMIT_COUNT = 5;
