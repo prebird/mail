@@ -12,7 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
 
+@ActiveProfiles("guava")
 @Slf4j
 @SpringBootTest
 class MockMailControllerTest {
@@ -30,12 +32,12 @@ class MockMailControllerTest {
   }
 
   @Test
-  public void 초당_5건_이하의_요청은_제한되지_않습니다() {
+  void 초당_5건_이하의_요청은_제한되지_않습니다() {
     int requestCount = 5;
     String account = "test@example.com";
 
     for (int i = 0; i < requestCount; i++) {
-      callProcessMailAsync(account);
+      callProcessMailAsync(account);  // 비동기 호출
     }
 
     // 모든 작업이 완료되기를 기다림
@@ -50,12 +52,12 @@ class MockMailControllerTest {
   }
 
   @Test
-  public void 초당_5건_이상의_요청은_제한됩니다() {
+  void 초당_6건의_요청은_한건이_제한됩니다() {
     int requestCount = 6;
     String account = "test@example.com";
 
     for (int i = 0; i < requestCount; i++) {
-      callProcessMailAsync(account);
+      callProcessMailAsync(account);   // 비동기 호출
     }
 
     // 모든 작업이 완료되기를 기다림
@@ -63,7 +65,7 @@ class MockMailControllerTest {
         .exceptionally(ex -> null)  // 예외 무시
         .join();
 
-    assertThat(errorCount.longValue()).isNotZero();
+    assertThat(errorCount.longValue()).isEqualTo(1L); //  한건 실패
     log.info("All emails processed.");
     log.info("Success count: " + successCount.get());
     log.info("Error count: " + errorCount.get());

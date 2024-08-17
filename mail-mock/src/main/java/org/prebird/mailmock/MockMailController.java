@@ -6,6 +6,7 @@ import org.prebird.mailmock.service.MailRateLimiter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -24,7 +25,7 @@ public class MockMailController {
    * @param account 이메일 계정
    */
   @PostMapping("/process-mail")
-  public ResponseEntity<Void> processMail(String account) {
+  public ResponseEntity<Void> processMail(@RequestParam String account) {
     if (!mailRateLimiter.isAllowed(account)) {
       return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).build();
     }
