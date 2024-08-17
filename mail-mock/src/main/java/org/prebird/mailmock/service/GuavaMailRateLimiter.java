@@ -12,7 +12,7 @@ public class GuavaMailRateLimiter implements MailRateLimiter {
   private final ConcurrentMap<String, RateLimiter> rateLimiters = new ConcurrentHashMap<>();
 
   @Override
-  public boolean limit(String account) {
+  public boolean isAllowed(String account) {
     RateLimiter rateLimiter = rateLimiters.computeIfAbsent(account, newRate -> createRateLimiter());
     if (rateLimiter.tryAcquire()) {
       return true;

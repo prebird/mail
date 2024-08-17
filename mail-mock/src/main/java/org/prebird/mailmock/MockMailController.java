@@ -25,7 +25,7 @@ public class MockMailController {
    */
   @PostMapping("/process-mail")
   public ResponseEntity<Void> processMail(String account) {
-    if (!mailRateLimiter.limit(account)) {
+    if (!mailRateLimiter.isAllowed(account)) {
       return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).build();
     }
     sleep(4000L); // gmail 평균 메세지 처리 시간 만큼 sleep

@@ -7,11 +7,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class Bucket4JMailRateLimiter implements MailRateLimiter{
-  private static final int LIMIT_COUNT = 5;
+  private static final int LIMIT_COUNT = 5; // 초당 5회 제한
   private ConcurrentHashMap<String, Bucket> buckets = new ConcurrentHashMap<>();
 
+  /**
+   * 계정별로 요청 제한을 적용하고, 처리 가능한지 반환합니다.
+   * @param account
+   * @return 요청 처리 가능 여부
+   */
   @Override
-  public boolean limit(String account) {
+  public boolean isAllowed(String account) {
     Bucket bucket = buckets.computeIfAbsent(account, newBucket -> createNewBucket());
     return bucket.tryConsume(1);
   }
