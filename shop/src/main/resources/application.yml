@@ -11,6 +11,9 @@ spring:
       message-queue:
         - app
         - rabbitmq
-    active: console
+      mock-mail:
+        - app
+        - mock-mail
+    active: mock-mail
 server:
   port: 8081
