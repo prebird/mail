@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("guava")
+//@ActiveProfiles("bucket4j")
 @Slf4j
 @SpringBootTest
 class MockMailControllerTest {
@@ -46,7 +47,6 @@ class MockMailControllerTest {
         .join();
 
     assertThat(errorCount.longValue()).isZero();
-    log.info("All emails processed.");
     log.info("Success count: " + successCount.get());
     log.info("Error count: " + errorCount.get());
   }
@@ -66,7 +66,6 @@ class MockMailControllerTest {
         .join();
 
     assertThat(errorCount.longValue()).isEqualTo(1L); //  한건 실패
-    log.info("All emails processed.");
     log.info("Success count: " + successCount.get());
     log.info("Error count: " + errorCount.get());
   }
