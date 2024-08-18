@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.MailSendException;
 import org.springframework.retry.annotation.EnableRetry;
+import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.interceptor.RetryInterceptorBuilder;
 import org.springframework.retry.interceptor.RetryOperationsInterceptor;
 import org.springframework.retry.support.RetryTemplate;
@@ -20,6 +21,7 @@ public class RetryConfig {
     MailRetryPolicy mailRetryPolicy = new MailRetryPolicy(3,
         Collections.singletonMap(MailSendException.class, true));
     retryTemplate.setRetryPolicy(mailRetryPolicy);
+    retryTemplate.setBackOffPolicy(new FixedBackOffPolicy()); // 1초 대기
 
     return retryTemplate;
   }
