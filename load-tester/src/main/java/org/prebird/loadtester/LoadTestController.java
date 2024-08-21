@@ -37,7 +37,7 @@ public class LoadTestController {
    * @param loop          반복수
    * @param description   테스트 설명
    */
-  @PostMapping("/generate-load")
+  @PostMapping("/load-tests/generate")
   public void generateLoad(@RequestParam int vUsers, @RequestParam long interval,
       @RequestParam int loop, @RequestParam String description) {
     // 테스트 정보 저장
@@ -58,7 +58,7 @@ public class LoadTestController {
    * @param id
    * @return
    */
-  @GetMapping("load-tests/{id}/summary")
+  @GetMapping("/load-tests/{id}/summary")
   public List<LoadTestResultSummaryDto> getLoadTestResult(@PathVariable Long id) {
     return loadTestRepository.findWithResultById(id)
         .map(this::summaryResult)

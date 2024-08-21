@@ -3,6 +3,7 @@ spring:
     group:
       console:
         - app
+        - mock-mail
       real:
         - app
         - mail
@@ -14,6 +15,6 @@ spring:
       mock-mail:
         - app
         - mock-mail
-    active: mock-mail
+    active: console
 server:
   port: 8081
