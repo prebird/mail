@@ -1,4 +1,4 @@
-package org.prebird.shop.load;
+package org.prebird.shop.loadTest;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

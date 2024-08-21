@@ -1,4 +1,4 @@
-package org.prebird.loadtester.domain;
+package org.prebird.shop.loadTest;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
