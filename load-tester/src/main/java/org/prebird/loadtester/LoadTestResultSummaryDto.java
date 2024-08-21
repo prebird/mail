@@ -13,7 +13,7 @@ import org.prebird.loadtester.domain.LoadTestResult;
 public class LoadTestResultSummaryDto {
   private Integer loopIdx;
   private LocalDateTime earliestRequestTime;
-  private Long averageProcessTime;
+  private Double averageProcessTime;
   private Long maxProcessTime;
   private Integer vUsers;
   private Double tps;   // vUsers / averageProcessTime
@@ -34,22 +34,25 @@ public class LoadTestResultSummaryDto {
 
     // 평균 처리 시간
     long totalProcessTime = loadTestResults.stream()
+        .filter(result -> result.getFinishTime() != null)
         .mapToLong(result -> Duration.between(result.getRequestTime(), result.getFinishTime()).toMillis())
         .sum();
-    long averageProcessTime = totalProcessTime / vUsers;
+    double averageProcessTime = (double)totalProcessTime / vUsers;
 
     // 최대 처리 시간
     long maxProcessTime = loadTestResults.stream()
+        .filter(result -> result.getFinishTime() != null)
         .mapToLong(result -> Duration.between(result.getRequestTime(), result.getFinishTime()).toMillis())
         .max()
         .orElse(0L);
 
     // TPS 계산
-    double totalDurationSeconds = Duration.between(
-        loadTestResults.stream().map(LoadTestResult::getRequestTime).min(LocalDateTime::compareTo).orElse(LocalDateTime.now()),
-        loadTestResults.stream().map(LoadTestResult::getFinishTime).max(LocalDateTime::compareTo).orElse(LocalDateTime.now())
-    ).toSeconds();
-    double tps = vUsers / totalDurationSeconds;
+//    double totalDurationSeconds = Duration.between(
+//        loadTestResults.stream().map(LoadTestResult::getRequestTime).min(LocalDateTime::compareTo).orElse(LocalDateTime.now()),
+//        loadTestResults.stream().map(LoadTestResult::getFinishTime).max(LocalDateTime::compareTo).orElse(LocalDateTime.now())
+//    ).toSeconds();
+//    double tps = vUsers / totalDurationSeconds;
+    double tps = vUsers / (double) (averageProcessTime / 1000);
 
     // DTO 생성
     return LoadTestResultSummaryDto.builder()
@@ -66,7 +69,7 @@ public class LoadTestResultSummaryDto {
     return LoadTestResultSummaryDto.builder()
         .loopIdx(0)
         .earliestRequestTime(null)
-        .averageProcessTime(0L)
+        .averageProcessTime(0d)
         .maxProcessTime(0L)
         .vUsers(0)
         .tps(0d)
