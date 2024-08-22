@@ -1,11 +1,13 @@
 package org.prebird.loadtester;
 
 import jakarta.transaction.Transactional;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.prebird.loadtester.domain.LoadTest;
 import org.prebird.loadtester.domain.LoadTestRepository;
 import org.prebird.loadtester.domain.LoadTestResult;
 import org.prebird.loadtester.domain.LoadTestResultRepository;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +32,7 @@ import org.springframework.web.client.RestClientResponseException;
 public class LoadTestController {
   private final LoadTestRepository loadTestRepository;
   private final LoadTestResultRepository loadTestResultRepository;
+  private final TaskExecutor loadTestTaskExecutor;
 
   /**
    * 일정 수준의 부하를 발생시킵니다.
@@ -63,6 +67,30 @@ public class LoadTestController {
     return loadTestRepository.findWithResultById(id)
         .map(this::summaryResult)
         .orElseGet(Collections::emptyList);
+  }
+
+  @GetMapping("/load-tests/{id}/tps")
+  public List<TpsDto> getLoadTestTps(@PathVariable Long id) {
+    List<LoadTestResult> results = loadTestRepository.findWithResultById(id)
+        .orElseThrow(() -> new IllegalArgumentException("결과가 없습니다."))
+        .getLoadTestResults();
+
+    Map<Long, Double> tps = new TreeMap<>();
+    for (LoadTestResult result : results) {
+      if (result.getFinishTime() == null) { // finish_time이 null인 경우 건너뜁니다.
+        continue;
+      }
+      long elapsedTime = Duration.between(results.get(0).getRequestTime(), result.getRequestTime())
+          .getSeconds();
+      long processingTime = Duration.between(result.getRequestTime(), result.getFinishTime())
+          .toMillis();
+
+      // TPS 계산
+      tps.merge(elapsedTime, 1.0 / processingTime, Double::sum);
+    }
+    return tps.entrySet().stream()
+        .map(entry -> new TpsDto(entry.getKey(), entry.getValue() * 1000))
+        .collect(Collectors.toList());
   }
 
   /**
@@ -101,7 +129,7 @@ public class LoadTestController {
                 .build()));
         // 메일 발송 요청
         requestSendMail(loadTestResult.getId());
-      });
+      }, loadTestTaskExecutor);
       futures.add(future);
     }
 
