@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -71,9 +72,7 @@ public class LoadTestController {
 
   @GetMapping("/load-tests/{id}/tps")
   public List<TpsDto> getLoadTestTps(@PathVariable Long id) {
-    List<LoadTestResult> results = loadTestRepository.findWithResultById(id)
-        .orElseThrow(() -> new IllegalArgumentException("결과가 없습니다."))
-        .getLoadTestResults();
+    List<LoadTestResult> results = getLoadTestResults(id);
 
     Map<Long, Double> tps = new TreeMap<>();
     for (LoadTestResult result : results) {
@@ -90,6 +89,21 @@ public class LoadTestController {
     }
     return tps.entrySet().stream()
         .map(entry -> new TpsDto(entry.getKey(), entry.getValue() * 1000))
+        .collect(Collectors.toList());
+  }
+
+  private List<LoadTestResult> getLoadTestResults(Long id) {
+    List<LoadTestResult> results = loadTestRepository.findWithResultById(id)
+        .orElseThrow(() -> new IllegalArgumentException("결과가 없습니다."))
+        .getLoadTestResults();
+    return results;
+  }
+
+  @GetMapping("/load-tests/{id}/process-time")
+  public List<ProcessTimeDto> getLoadTestProcessTime(@PathVariable Long id) {
+    List<LoadTestResult> results = getLoadTestResults(id);
+    AtomicLong index = new AtomicLong(0);
+    return results.stream().map(result -> ProcessTimeDto.from(result, index.getAndIncrement()))
         .collect(Collectors.toList());
   }
 

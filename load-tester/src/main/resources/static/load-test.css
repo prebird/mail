@@ -1,3 +1,15 @@
 .chart-container {
   margin-top: 40px; /* 차트 위쪽에 40px의 여백 추가 */
 }
+
+ /*.chart-container {*/
+ /*  width: 50%; !* 차트의 가로 크기 *!*/
+ /*  !*height: 400px; !* 차트의 세로 크기 *!*!*/
+ /*  margin: 0 auto; !* 중앙 정렬 *!*/
+ /*}*/
+
+.chart-title {
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 10px;
+}

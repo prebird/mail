@@ -30,9 +30,24 @@
     </tr>
     </tbody>
   </table>
-  <!-- TPS 테이블 -->
-  <div class="chart-container">
-    <canvas id="tpsChart"></canvas>
+
+  <div class="row">
+    <!-- TPS 테이블 -->
+    <div class="col-md-6">
+      <div class="chart-title">TPS 그래프</div>
+      <div class="chart-container">
+        <canvas id="tpsChart"></canvas>
+      </div>
+    </div>
+    <!-- 처리시간 테이블 -->
+    <div class="col-md-6">
+      <div class="chart-title">처리시간 그래프</div>
+      <div class="chart-container">
+        <canvas id="processingTimeChart"></canvas>
+      </div>
+    </div>
+  </div>
+
   </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
