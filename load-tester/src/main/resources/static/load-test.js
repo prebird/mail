@@ -55,14 +55,14 @@ const loadTest = {
       labels: labels,
       datasets: [{
         label: dataLabel,
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderColor: 'rgba(75, 192, 192, 1)',
         data: data,
         fill: false,
         pointRadius: 3, // 점 크기 설정
         pointHoverRadius: 5, // 마우스 오버 시 점 크기 설정
         borderWidth: 2, // 선 두께 설정
-        showLine: showLine  // 이 옵션을 통해 선을 표시하지 않음
+        showLine: showLine,  // 이 옵션을 통해 선을 표시하지 않음
+        pointBackgroundColor: data.map(value => value === 0 ? 'red' : 'rgba(75, 192, 192, 0.2)'), // 처리 시간이 0인 경우 빨간색 점
+        pointBorderColor: data.map(value => value === 0 ? 'red' : 'rgba(75, 192, 192, 1)') // 처리 시간이 0인 경우 빨간색 점
       }]
     },
     options: {
