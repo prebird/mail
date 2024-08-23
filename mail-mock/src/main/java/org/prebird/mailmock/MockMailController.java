@@ -19,12 +19,12 @@ public class MockMailController {
   private final MailRateLimiter mailRateLimiter;
 
   /**
-   * 메일을 처리하는 동작을 Mocking 합니다.
+   * 메일을 처리의 Mock API
    * - email 계정별 Rate Limit 적용 (초당 5건 제한)
    * - 실제 처리 시간 만큼 sleep
    * @param account 이메일 계정
    */
-  @PostMapping("/process-mail")
+  @PostMapping("/mock-process-mail")
   public ResponseEntity<Void> processMail(@RequestParam String account) {
     if (!mailRateLimiter.isAllowed(account)) {
       return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).build();

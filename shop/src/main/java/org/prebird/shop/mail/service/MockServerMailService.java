@@ -50,7 +50,7 @@ public class MockServerMailService {
     try {
       restClient.post()
           .uri(uriBuilder -> uriBuilder
-              .path("/process-mail")
+              .path("/mock-process-mail")
               .queryParam("account", emailAccount)
               .build())
           .retrieve()
