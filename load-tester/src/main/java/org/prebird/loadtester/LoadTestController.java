@@ -58,6 +58,11 @@ public class LoadTestController {
     }
   }
 
+  /**
+   * 테스트 결과로 시간대별로 TPS로 집계합니다.
+   * @param id
+   * @return
+   */
   @GetMapping("/load-tests/{id}/tps")
   public List<TpsDto> getLoadTestTps(@PathVariable Long id) {
     LoadTest loadTest = getLoadTest(id);
@@ -81,11 +86,11 @@ public class LoadTestController {
         .collect(Collectors.toList());
   }
 
-  private LoadTest getLoadTest(Long id) {
-    return loadTestRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("결과가 없습니다."));
-  }
-
+  /**
+   * 테스트 결과로 요청순서별 처리시간을 집계합니다.
+   * @param id
+   * @return
+   */
   @GetMapping("/load-tests/{id}/process-time")
   public List<ProcessTimeDto> getLoadTestProcessTime(@PathVariable Long id) {
     LoadTest loadTest = getLoadTest(id);
@@ -93,6 +98,11 @@ public class LoadTestController {
     AtomicLong index = new AtomicLong(0);
     return results.stream().map(result -> ProcessTimeDto.from(result, index.getAndIncrement()))
         .collect(Collectors.toList());
+  }
+
+  private LoadTest getLoadTest(Long id) {
+    return loadTestRepository.findById(id)
+        .orElseThrow(() -> new IllegalArgumentException("결과가 없습니다."));
   }
 
   /**
