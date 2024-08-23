@@ -58,21 +58,10 @@ public class LoadTestController {
     }
   }
 
-  /**
-   * 부하테스트 결과를 요약합니다.
-   * @param id
-   * @return
-   */
-  @GetMapping("/load-tests/{id}/summary")
-  public List<LoadTestResultSummaryDto> getLoadTestResult(@PathVariable Long id) {
-    return loadTestRepository.findWithResultById(id)
-        .map(this::summaryResult)
-        .orElseGet(Collections::emptyList);
-  }
-
   @GetMapping("/load-tests/{id}/tps")
   public List<TpsDto> getLoadTestTps(@PathVariable Long id) {
-    List<LoadTestResult> results = getLoadTestResults(id);
+    LoadTest loadTest = getLoadTest(id);
+    List<LoadTestResult> results = loadTestResultRepository.findByLoadTestOrderByRequestTime(loadTest);
 
     Map<Long, Double> tps = new TreeMap<>();
     for (LoadTestResult result : results) {
@@ -92,16 +81,15 @@ public class LoadTestController {
         .collect(Collectors.toList());
   }
 
-  private List<LoadTestResult> getLoadTestResults(Long id) {
-    List<LoadTestResult> results = loadTestRepository.findWithResultById(id)
-        .orElseThrow(() -> new IllegalArgumentException("결과가 없습니다."))
-        .getLoadTestResults();
-    return results;
+  private LoadTest getLoadTest(Long id) {
+    return loadTestRepository.findById(id)
+        .orElseThrow(() -> new IllegalArgumentException("결과가 없습니다."));
   }
 
   @GetMapping("/load-tests/{id}/process-time")
   public List<ProcessTimeDto> getLoadTestProcessTime(@PathVariable Long id) {
-    List<LoadTestResult> results = getLoadTestResults(id);
+    LoadTest loadTest = getLoadTest(id);
+    List<LoadTestResult> results = loadTestResultRepository.findByLoadTestOrderByRequestTime(loadTest);
     AtomicLong index = new AtomicLong(0);
     return results.stream().map(result -> ProcessTimeDto.from(result, index.getAndIncrement()))
         .collect(Collectors.toList());
