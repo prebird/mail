@@ -1,4 +1,4 @@
-package org.prebird.loadtester;
+package org.prebird.loadtester.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

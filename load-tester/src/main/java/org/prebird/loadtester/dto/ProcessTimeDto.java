@@ -1,8 +1,6 @@
-package org.prebird.loadtester;
+package org.prebird.loadtester.dto;
 
-import java.io.Serializable;
 import java.time.Duration;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.prebird.loadtester.domain.LoadTestResult;

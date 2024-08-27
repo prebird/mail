@@ -1,4 +1,4 @@
-package org.prebird.loadtester;
+package org.prebird.loadtester.dto;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
