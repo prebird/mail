@@ -10,18 +10,12 @@ RUN gradle build -x test --parallel --continue > /dev/null 2>&1 || true
 COPY . /build
 RUN ./gradlew -x test --no-daemon clean build
 
-COPY gradlew .
-COPY gradle gradle
-COPY settings.gradle build.gradle /build/
-RUN ./gradlew -x test --no-daemon build
-
 # APP
-FROM openjdk:11.0-slim
+FROM openjdk:17.0-slim
 WORKDIR /app
-
-ENV ENV_DIR=src/main/resources
-COPY --from=builder /build/build/libs/*.jar .
+COPY --from=builder /build/build/libs/shop.jar .
 EXPOSE 8080
-ENTRYPOINT java -jar -x test shop.jar
+ENTRYPOINT java -jar shop.jar
 
 # docker build --platform linux/amd64 -t shop:latest .
+# docker run -e "SPRING_PROFILES_ACTIVE=console" shop:latest
