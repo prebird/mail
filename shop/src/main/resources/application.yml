@@ -17,7 +17,7 @@ spring:
         - mock-mail
       minikube:
         - app-minikube
-        - mock-mail
-    active: minikube
+        - mock-mail-minikube
+    active: console
 server:
-  port: 8081
+  port: 8080

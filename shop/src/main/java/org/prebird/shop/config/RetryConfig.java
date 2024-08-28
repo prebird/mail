@@ -1,6 +1,7 @@
 package org.prebird.shop.config;
 
 import java.util.Collections;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.MailSendException;
@@ -14,11 +15,14 @@ import org.springframework.retry.support.RetryTemplate;
 @EnableRetry
 public class RetryConfig {
 
+  @Value("${mail.retry.count}")
+  private Integer mailRetryCount;
+
   @Bean
   public RetryTemplate mailRetryTemplate() {
     RetryTemplate retryTemplate = new RetryTemplate();
 
-    MailRetryPolicy mailRetryPolicy = new MailRetryPolicy(3,
+    MailRetryPolicy mailRetryPolicy = new MailRetryPolicy(mailRetryCount,
         Collections.singletonMap(MailSendException.class, true));
     retryTemplate.setRetryPolicy(mailRetryPolicy);
     retryTemplate.setBackOffPolicy(new FixedBackOffPolicy()); // 1초 대기

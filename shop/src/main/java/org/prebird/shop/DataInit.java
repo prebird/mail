@@ -4,22 +4,26 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.prebird.shop.product.Product;
 import org.prebird.shop.product.ProductRepository;
 import org.prebird.shop.member.Member;
 import org.prebird.shop.member.MemberRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class DataInit implements CommandLineRunner {
   private final MemberRepository memberRepository;
   private final ProductRepository productRepository;
   private final DataSource dataSource;
+  private final Environment env;
 
   @Override
   public void run(String... args) throws Exception {
@@ -35,6 +39,8 @@ public class DataInit implements CommandLineRunner {
             .name("사과")
             .price(1000)
         .build());
+
+    logAppLog();
   }
 
   private void truncate() {
@@ -46,5 +52,11 @@ public class DataInit implements CommandLineRunner {
       e.printStackTrace();
       throw new RuntimeException("Failed to execute truncate.sql", e);
     }
+  }
+
+  private void logAppLog() {
+    String mailRetryCount = env.getProperty("mail.retry.count");
+    log.info("----- app log -------");
+    log.info("mailRetryCount : {}", mailRetryCount);
   }
 }

@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Slf4j
-@Profile("console")
+@Profile({"console", "mock-mail-minikube"})
 @Service
 public class ConsoleMailService implements MailService{
 
