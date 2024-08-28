@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Profile("bucket4j")
 @Service
 public class Bucket4JMailRateLimiter implements MailRateLimiter{
-  private static final int LIMIT_COUNT = 5; // 초당 5회 제한
+  private static final int LIMIT_COUNT = 10; // 초당 5회 제한
   private ConcurrentHashMap<String, Bucket> buckets
       = new ConcurrentHashMap<>();
 
