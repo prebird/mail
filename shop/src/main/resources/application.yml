@@ -18,6 +18,7 @@ spring:
       minikube:
         - app-minikube
         - mock-mail-minikube
+        - actuator
     active: console
 server:
   port: 8080
