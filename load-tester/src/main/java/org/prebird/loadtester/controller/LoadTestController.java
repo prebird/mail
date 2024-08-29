@@ -152,7 +152,7 @@ public class LoadTestController {
 
   private void requestSendMail(Long loadTestResultId) {
     RestClient restClient = RestClient.builder()
-        .baseUrl("http://localhost:53743").build();
+        .baseUrl("http://localhost:56876").build();
     try {
       restClient.post()
           .uri(uriBuilder -> uriBuilder
