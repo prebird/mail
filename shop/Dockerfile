@@ -17,5 +17,6 @@ COPY --from=builder /build/build/libs/shop.jar .
 EXPOSE 8080
 ENTRYPOINT java -jar shop.jar
 
-# docker build --platform linux/amd64 -t shop:latest .
+# docker build --platform linux/amd64 -t gyureal/shop:latest .
+# docker push gyureal/shop:latest
 # docker run -e "SPRING_PROFILES_ACTIVE=console" shop:latest
