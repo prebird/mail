@@ -3,16 +3,13 @@ package org.prebird.mailmock.service;
 import io.github.bucket4j.Bucket;
 import java.time.Duration;
 import java.util.concurrent.ConcurrentHashMap;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Profile("bucket4j")
 @Service
 public class Bucket4JMailRateLimiter implements MailRateLimiter{
-  @Value("rateLimit.count")
-  private Integer LIMIT_COUNT;
-
+  private static final int LIMIT_COUNT = 10; // 초당 5회 제한
   private ConcurrentHashMap<String, Bucket> buckets
       = new ConcurrentHashMap<>();
 
