@@ -22,15 +22,15 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: minikube
             - name: JAVA_TOOL_OPTIONS
-              value: "-Xmx300m -Xms300m"
+              value: "-Xmx1000m -Xms1000m"
 #            - name: SPRING_APPLICATION_JSON
 #              value: '{"logging.level.root": "debug"}'
             - name: MAIL_ASYNC_CORE_POOL_SIZE
-              value: "32"
+              value: "16"
             - name: MAIL_ASYNC_MAX_POOL_SIZE
-              value: "32"
+              value: "16"
             - name: MAIL_ASYNC_QUEUE_SIZE
-              value: "100000"
+              value: "50"
             - name: MAIL_RETRY_COUNT
               value: "10"
           image: gyureal/shop:latest
@@ -38,10 +38,10 @@ spec:
           resources:
             requests:
               cpu: 2000m
-              memory: "1Gi"
+              memory: "2Gi"
             limits:
               cpu: 2000m
-              memory: "1Gi"
+              memory: "2Gi"
           ports:
             - name: app
               containerPort: 8080

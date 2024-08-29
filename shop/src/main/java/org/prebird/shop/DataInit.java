@@ -41,6 +41,7 @@ public class DataInit implements CommandLineRunner {
         .build());
 
     logAppLog();
+    logMemorySettings();
   }
 
   private void truncate() {
@@ -58,5 +59,13 @@ public class DataInit implements CommandLineRunner {
     String mailRetryCount = env.getProperty("mail.retry.count");
     log.info("----- app log -------");
     log.info("mailRetryCount : {}", mailRetryCount);
+  }
+
+  public static void logMemorySettings() {
+    long xms = Runtime.getRuntime().totalMemory(); // 초기 힙 메모리 (Xms)
+    long xmx = Runtime.getRuntime().maxMemory(); // 최대 힙 메모리 (Xmx)
+
+    log.info("Initial Heap Size (Xms): " + xms / (1024 * 1024) + " MB");
+    log.info("Max Heap Size (Xmx): " + xmx / (1024 * 1024) + " MB");
   }
 }
