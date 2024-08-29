@@ -19,3 +19,5 @@ mail:
     core-pool-size: 10
     max-pool-size: 10
     queue-size: 30
+  retry:
+    count: 5
