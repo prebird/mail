@@ -4,3 +4,12 @@ spring:
 
 server:
   port: 8082
+
+rateLimit:
+  count: 5
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh
