@@ -1,0 +1,6 @@
+spring:
+  profiles:
+    active: bucket4j
+
+server:
+  port: 8082

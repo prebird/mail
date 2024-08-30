@@ -24,17 +24,17 @@ public class OrdersService {
     Member member = memberRepository.findByUsername(username).orElseThrow();
     Product product = productRepository.findById(productId).orElseThrow();
 
-    // 주문 완료 메일 발송
-    mailService.send(EmailMessage.builder()
-            .toEmail(member.getEmail())
-            .subject("주문 완료 메일")
-            .message("<h1> 주문이 완료 되었습니다. </h1>")
-        .build(), EmailType.NORMAL);
-
     // 주문 데이터 저장
     ordersRepository.save(Orders.builder()
             .buyer(member)
             .price(product.getPrice())
         .build());
+
+    // 주문 완료 메일 발송
+    mailService.send(EmailMessage.builder()
+        .toEmail(member.getEmail())
+        .subject("주문 완료 메일")
+        .message("<h1> 주문이 완료 되었습니다. </h1>")
+        .build()); //, EmailType.NORMAL
   }
 }

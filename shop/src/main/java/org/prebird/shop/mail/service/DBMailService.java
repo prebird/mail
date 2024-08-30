@@ -19,8 +19,8 @@ public class DBMailService implements MailService{
   private final EmailMessageRepository emailMessageRepository;
 
   @Override
-  public void send(EmailMessage emailMessage, EmailType emailType) {
-    emailMessage.changeEmailType(emailType);
+  public void send(EmailMessage emailMessage) {
+//    emailMessage.changeEmailType(emailType);
     emailMessageRepository.save(emailMessage);
     log.info(">>> emailMessage 메세지가 DB에 저장되었습니다.");
   }

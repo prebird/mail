@@ -1,65 +1,78 @@
 package org.prebird.shop;
 
+import static org.assertj.core.api.Assertions.*;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicLong;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.prebird.shop.mail.domain.EmailMessage;
-import org.prebird.shop.mail.domain.EmailType;
-import org.prebird.shop.mail.service.MailService;
+import org.prebird.shop.mail.domain.EmailMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.test.context.ActiveProfiles;
 
 @Slf4j
-@ActiveProfiles("real")
-@SpringBootTest(properties = {
-    "GMAIL_PASSWORD="
-})
+@ActiveProfiles("mock-mail")
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, properties = {"GMAIL_PASSWORD="})
 public class AsyncMailLoadTest {
+  @LocalServerPort
+  private int port;
+
   @Autowired
-  private MailService mailService;
+  private EmailMessageRepository emailMessageRepository;
 
-  private static TaskExecutor taskExecutor;
+  @Autowired
+  private TestRestTemplate testRestTemplate;
 
-  static {
-    taskExecutor = testMailTaskExecutor();
-  }
+  private static TaskExecutor taskExecutor = testMailTaskExecutor();
 
   private AtomicLong successCount = new AtomicLong(0L);
   private AtomicLong errorCount = new AtomicLong(0L);
   List<CompletableFuture<Void>> futures = new ArrayList<>();
 
-  @Test
-  void loadTest() {
-    Long vUsers = 30L;
-    EmailMessage emailMessage = EmailMessage.builder().toEmail("iopengom@naver.com")
-        .message("테스트 메세지")
-        .subject("테스트 메세지").build();
+  @BeforeEach
+  void init() {
+    emailMessageRepository.deleteAll();
+    successCount = new AtomicLong(0L);
+    errorCount = new AtomicLong(0L);
+    futures = new ArrayList<>();
+  }
 
+  @Test
+  void 주문생성요청_을_동시에_vUser_만큼_전송합니다() {
+    // given
+    int vUsers = 6;
+    // when
     for (int i = 0; i < vUsers; i++) {
-      sendMailAsync(emailMessage);      // CompletableFuture 를 사용하여 동시에 요청을 보냄
+      requestCreateOrderAsync();      // CompletableFuture 를 사용하여 동시에 요청을 보냄
     }
 
     // 모든 작업이 완료되기를 기다림
-    CompletableFuture<Void> allFutures = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+    CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
+        .exceptionally(ex -> null)  // 예외 무시
+        .join();
 
-    allFutures.handle((result, ex) -> {   // whenComplete 는 예외를 밖으로 던짐, handle 은 응답을 정해줘야함, exceptionally() 는 예외 발생시에만 동작함
-      log.info("All emails processed.");
-      log.info("Success count: " + successCount.get());
-      log.info("Error count: " + errorCount.get());
-      return null; // 정상응답
-    }).join(); // 메인 스레드에서 실행을 기다리게 하기 위해 사용
+    // then
+    List<EmailMessage> sentEmail = emailMessageRepository.findBySentAtIsNotNull();
+    assertThat(sentEmail).hasSize(vUsers);
+    log.info("All emails processed.");
+    log.info("Success count: " + successCount.get());
+    log.info("Error count: " + errorCount.get());
   }
 
-  private void sendMailAsync(EmailMessage emailMessage) {
+  private void requestCreateOrderAsync() {
       CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
-      mailService.send(emailMessage, EmailType.NORMAL);
+        requestCreateOrder();
     }, taskExecutor).whenComplete((result, ex) -> {
       if (ex != null) {
         log.error("## error!", ex);
@@ -70,6 +83,11 @@ public class AsyncMailLoadTest {
       }
     });
     futures.add(future);
+  }
+
+  private void requestCreateOrder() {
+    String url = "http://localhost:" + port + "/orders?username=tester01&productId=1";
+    testRestTemplate.postForEntity(url, null, Void.class);
   }
 
   private static TaskExecutor testMailTaskExecutor() {

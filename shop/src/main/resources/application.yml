@@ -3,6 +3,7 @@ spring:
     group:
       console:
         - app
+        - mock-mail
       real:
         - app
         - mail
@@ -11,6 +12,13 @@ spring:
       message-queue:
         - app
         - rabbitmq
-    active: message-queue
+      mock-mail:
+        - app
+        - mock-mail
+      minikube:
+        - app-minikube
+        - mock-mail-minikube
+        - actuator
+    active: console
 server:
-  port: 8081
+  port: 8080

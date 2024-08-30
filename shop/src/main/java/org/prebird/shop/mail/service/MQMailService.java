@@ -24,18 +24,18 @@ public class MQMailService implements MailService {
   private final EmailMessageRepository emailMessageRepository;
 
   @Override
-  public void send(EmailMessage emailMessage, EmailType emailType) {
+  public void send(EmailMessage emailMessage) {
     log.info("MQMailService called");
     EmailMessage savedEmailMessage = emailMessageRepository.save(emailMessage);
 
-    if (emailType == EmailType.NORMAL) {
-      rabbitTemplate.convertAndSend(RabbitMqConfig.MAIL_TOPIC_EXCHANGE_NAME, RabbitMqConfig.NORMAL_MAIL_ROUTING_KEY, savedEmailMessage);
-      return;
-    }
-    if (emailType == EmailType.URGENT) {
-      rabbitTemplate.convertAndSend(RabbitMqConfig.MAIL_TOPIC_EXCHANGE_NAME, RabbitMqConfig.URGENT_MAIL_ROUTING_KEY, savedEmailMessage);
-      return;
-    }
+//    if (emailType == EmailType.NORMAL) {
+//      rabbitTemplate.convertAndSend(RabbitMqConfig.MAIL_TOPIC_EXCHANGE_NAME, RabbitMqConfig.NORMAL_MAIL_ROUTING_KEY, savedEmailMessage);
+//      return;
+//    }
+//    if (emailType == EmailType.URGENT) {
+//      rabbitTemplate.convertAndSend(RabbitMqConfig.MAIL_TOPIC_EXCHANGE_NAME, RabbitMqConfig.URGENT_MAIL_ROUTING_KEY, savedEmailMessage);
+//      return;
+//    }
     throw new IllegalStateException("올바르지 않은 EmailType 입니다.");
   }
 }

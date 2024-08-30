@@ -1,0 +1,3 @@
+mock-mail:
+  server-url: http://host.minikube.internal:8082
+  account: test@example.com

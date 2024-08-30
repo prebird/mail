@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shop
+  labels:
+    app: shop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shop
+  template:
+    metadata:
+      labels:
+        app: shop
+    spec:
+      containers:
+        - name: shop
+          env:
+            - name: TZ
+              value: Asia/Seoul
+            - name: SPRING_PROFILES_ACTIVE
+              value: minikube
+            - name: JAVA_TOOL_OPTIONS
+              value: "-Xmx1000m -Xms1000m"
+#            - name: SPRING_APPLICATION_JSON
+#              value: '{"logging.level.root": "debug"}'
+            - name: MAIL_ASYNC_CORE_POOL_SIZE
+              value: "16"
+            - name: MAIL_ASYNC_MAX_POOL_SIZE
+              value: "16"
+            - name: MAIL_ASYNC_QUEUE_SIZE
+              value: "50"
+            - name: MAIL_RETRY_COUNT
+              value: "10"
+          image: gyureal/shop:latest
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: 2000m
+              memory: "2Gi"
+            limits:
+              cpu: 2000m
+              memory: "2Gi"
+          ports:
+            - name: app
+              containerPort: 8080
+            - name: actuator
+              containerPort: 8181
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: shop
+  labels:
+    app: shop
+spec:
+  selector:
+    app: shop
+  ports:
+    - name: app
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+    - name: actuator
+      protocol: TCP
+      port: 8181
+      targetPort: 8181
+
+---
+# 프로메테우스 메트릭 스크랩용 오브젝트
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: shop-service-monitor
+  labels:
+    release: prometheus   # 메트릭 스크랩을 위해 설정 필수
+spec:
+  selector:
+    matchLabels:
+      app: shop
+  namespaceSelector:
+    any: true
+  endpoints:
+    - port: actuator
+      path: "/actuator/prometheus"
+      interval: 5s
